@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Mishkah</title>
+<meta name="description" content="Mishkah's privacy policy: no server, no account, no ads, no analytics. Everything the app stores stays on your device.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230F5A4E'/%3E%3Cpath d='M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430' fill='none' stroke='%23C9A24B' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M138,430 L374,430' stroke='%23C9A24B' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z' fill='%23E7C979' stroke='%23C9A24B' stroke-width='9'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#FBF7EC;
+    --surface:#FFFFFF;
+    --surface-alt:#F3ECDA;
+    --text:#182420;
+    --text-muted:#5B6B63;
+    --accent:#0F5A4E;
+    --accent-ink:#0F5A4E;
+    --gold:#AD8433;
+    --gold-soft:#E7C979;
+    --border:#E3D9BC;
+    --shadow: 0 1px 2px rgba(24,36,32,.04), 0 8px 24px -12px rgba(24,36,32,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#081A16;
+      --surface:#0F2620;
+      --surface-alt:#123028;
+      --text:#F1EAD4;
+      --text-muted:#A9BDB0;
+      --accent:#E7C979;
+      --accent-ink:#F3DFA0;
+      --gold:#E7C979;
+      /* --gold-soft intentionally not redefined: it's the lamp's glow fill in the
+         logo mark and should stay warm gold in every theme, like the real app icon. */
+      --border:#1E4238;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#081A16;
+    --surface:#0F2620;
+    --surface-alt:#123028;
+    --text:#F1EAD4;
+    --text-muted:#A9BDB0;
+    --accent:#E7C979;
+    --accent-ink:#F3DFA0;
+    --gold:#E7C979;
+    --border:#1E4238;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Source Serif 4", Georgia, "Noto Serif", serif;
+    font-optical-sizing:auto;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px 96px;}
+
+  header.top{
+    display:flex;align-items:center;gap:14px;
+    padding:40px 0 28px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:40px;
+  }
+  .mark{width:34px;height:34px;flex:none;}
+  .wordmark{
+    font-family:"Amiri", Georgia, serif;
+    font-weight:700;
+    font-size:1.35rem;
+    letter-spacing:.01em;
+    color:var(--text);
+    text-decoration:none;
+  }
+  .tagchip{
+    margin-left:auto;
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    font-size:.72rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    padding:5px 11px;
+    border-radius:100px;
+  }
+
+  h1{
+    font-family:"Amiri", Georgia, serif;
+    font-weight:700;
+    font-size:2.35rem;
+    line-height:1.15;
+    margin:0 0 8px;
+    text-wrap:balance;
+  }
+  .dek{
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    color:var(--text-muted);
+    font-size:.95rem;
+    margin:0 0 36px;
+  }
+
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--gold);
+    border-radius:10px;
+    padding:20px 22px;
+    margin:8px 0 40px;
+    box-shadow:var(--shadow);
+  }
+  .callout p{margin:0;font-size:1.02rem;}
+  .callout strong{color:var(--accent-ink);}
+
+  nav.toc{
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    font-size:.88rem;
+    display:flex;flex-wrap:wrap;gap:8px 18px;
+    margin:0 0 44px;
+    padding:16px 20px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:10px;
+  }
+  nav.toc a{color:var(--text-muted);text-decoration:none;}
+  nav.toc a:hover, nav.toc a:focus-visible{color:var(--accent-ink);text-decoration:underline;}
+
+  section{margin:0 0 40px;scroll-margin-top:24px;}
+  h2{
+    font-family:"Amiri", Georgia, serif;
+    font-weight:700;
+    font-size:1.4rem;
+    margin:0 0 14px;
+    color:var(--text);
+  }
+  p{margin:0 0 14px;max-width:64ch;}
+  ul{margin:0 0 14px;padding-left:1.25em;max-width:64ch;}
+  li{margin:0 0 8px;}
+  li::marker{color:var(--gold);}
+
+  table{
+    width:100%;border-collapse:collapse;
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    font-size:.88rem;
+    margin:8px 0 20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .tablewrap{overflow-x:auto;border-radius:10px;}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{
+    background:var(--surface-alt);
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--text-muted);
+  }
+  tr:last-child td{border-bottom:none;}
+
+  a{color:var(--accent-ink);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+
+  footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    font-size:.82rem;
+    color:var(--text-muted);
+    display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  }
+  footer a{color:var(--text-muted);text-decoration:none;}
+  footer a:hover{color:var(--accent-ink);}
+
+  @media (prefers-reduced-motion: no-preference){
+    section{animation:rise .5s ease both;}
+    section:nth-of-type(2){animation-delay:.03s;}
+    section:nth-of-type(3){animation-delay:.06s;}
+    @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="wordmark" href="index.html" style="display:flex;align-items:center;gap:14px;">
+      <svg class="mark" viewBox="0 0 512 512" aria-hidden="true">
+        <path d="M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430" fill="none" stroke="var(--gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M138,430 L374,430" stroke="var(--gold)" stroke-width="18" stroke-linecap="round"/>
+        <path d="M256,150 L256,222" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+        <path d="M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="9"/>
+        <path d="M256,270 Q270,286 256,312 Q242,286 256,270 Z" fill="var(--surface)"/>
+      </svg>
+      Mishkah
+    </a>
+    <span class="tagchip">Privacy Policy</span>
+  </header>
+
+  <h1>Privacy Policy</h1>
+  <p class="dek">Effective 31 August 2026 · Applies to the Mishkah Android app (package <code>com.mishkah.quran</code>)</p>
+
+  <div class="callout">
+    <p><strong>The short version:</strong> Mishkah has no server, no account, no ads, and no analytics. It does not even request internet access. Everything the app stores — your bookmarks, your memorization progress, your reading streak — stays on your device, and nothing is ever transmitted anywhere.</p>
+  </div>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#collect">What we access</a>
+    <a href="#storage">Where it's stored</a>
+    <a href="#sharing">Sharing &amp; third parties</a>
+    <a href="#permissions">Permissions</a>
+    <a href="#children">Children</a>
+    <a href="#rights">Your choices</a>
+    <a href="#changes">Changes</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="collect">
+    <h2>What Mishkah accesses</h2>
+    <p>Mishkah is built to work fully offline. It does not collect, transmit, or receive any data over the internet, because it does not request network access at all. The only device data it reads is listed below, and every use is local to your device.</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Data</th><th>Why</th><th>Leaves the device?</th></tr></thead>
+      <tbody>
+        <tr><td>Location (coarse or precise)</td><td>Computes the Qibla bearing and today's prayer times for where you are</td><td>Never</td></tr>
+        <tr><td>Notification delivery</td><td>Shows the prayer-time reminder you opted into</td><td>Never — it's a local, on-device notification</td></tr>
+        <tr><td>Bookmarks &amp; memorization progress</td><td>Lets you save ayat and track hifz progress</td><td>Never — stored in a local database only</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section id="storage">
+    <h2>Where your data is stored</h2>
+    <p>Bookmarks, memorization progress, your reading streak, and your last-computed location are stored in a local database and local preferences store on your device, using standard Android storage (Room and DataStore). None of it is backed up to any server Mishkah operates, because Mishkah doesn't operate one.</p>
+  </section>
+
+  <section id="sharing">
+    <h2>Sharing &amp; third parties</h2>
+    <p>Mishkah contains no advertising SDK, no analytics SDK, and no crash-reporting SDK. It does not sell, rent, or share any data with third parties — there is nothing to share, since nothing leaves your device. The Quran text and translations bundled in the app are static, read-only content shipped inside the app itself, not fetched from any server.</p>
+  </section>
+
+  <section id="permissions">
+    <h2>Permissions, explained</h2>
+    <ul>
+      <li><strong>Location</strong> — used only inside the Qibla tab, to calculate the direction to the Kaaba and your local prayer times. You can deny this and still use every other part of the app; the Qibla compass and prayer times simply won't be available.</li>
+      <li><strong>Notifications</strong> — used only to show a reminder at prayer time, if you turn that toggle on. You can deny or later revoke this in your device's notification settings at any time.</li>
+      <li><strong>Exact alarm &amp; boot</strong> — used only to make sure your prayer-time reminder fires at the correct minute and keeps working after you restart your phone. It schedules no other alarms and runs no other background task.</li>
+    </ul>
+  </section>
+
+  <section id="children">
+    <h2>Children's privacy</h2>
+    <p>Mishkah is a general-audience reading app and does not knowingly collect personal information from anyone, including children — it doesn't collect personal information from anyone at all, by design, as explained above.</p>
+  </section>
+
+  <section id="rights">
+    <h2>Your choices</h2>
+    <p>Because everything Mishkah stores lives only on your device, you're always in full control of it:</p>
+    <ul>
+      <li>Revoke location or notification permission at any time in Android Settings → Apps → Mishkah → Permissions.</li>
+      <li>Clear your bookmarks and memorization progress from within the app, or by clearing the app's storage in Android Settings.</li>
+      <li>Uninstalling the app removes everything Mishkah ever stored, since none of it exists anywhere else.</li>
+    </ul>
+  </section>
+
+  <section id="changes">
+    <h2>Changes to this policy</h2>
+    <p>If this policy ever changes — for example, if a future version of Mishkah adds a feature that does use the network — the "Effective" date at the top of this page will be updated, and the change will be described in the app's Play Store release notes.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Questions about this policy or the app can be sent to <a href="mailto:afifaali931@gmail.com">afifaali931@gmail.com</a>.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 Mishkah</span>
+    <span><a href="index.html">Home</a> · <a href="support.html">Support</a> · <a href="mailto:afifaali931@gmail.com">Contact</a></span>
+  </footer>
+</div>
+
+</body>
+</html>

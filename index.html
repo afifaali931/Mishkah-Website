@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mishkah — Quran Reader for Android</title>
+<meta name="description" content="Mishkah is a fully offline Quran reader for Android with Hifz tracking, a live Qibla compass, and prayer-time reminders. No ads, no accounts, no tracking.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230F5A4E'/%3E%3Cpath d='M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430' fill='none' stroke='%23C9A24B' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M138,430 L374,430' stroke='%23C9A24B' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z' fill='%23E7C979' stroke='%23C9A24B' stroke-width='9'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#FBF7EC;
+    --surface:#FFFFFF;
+    --surface-alt:#F3ECDA;
+    --text:#182420;
+    --text-muted:#5B6B63;
+    --accent:#0F5A4E;
+    --accent-ink:#0F5A4E;
+    --gold:#AD8433;
+    --gold-soft:#E7C979;
+    --border:#E3D9BC;
+    --night:#081A16;
+    --shadow: 0 1px 2px rgba(24,36,32,.05), 0 12px 28px -14px rgba(24,36,32,.16);
+    /* Fixed — the hero band is intentionally always-dark (like the app's own splash
+       screen), so its gold accents must not flip with viewer theme. Never redefine
+       this in the dark-mode blocks below. */
+    --lamp-gold:#E7C979;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#081A16; --surface:#0F2620; --surface-alt:#123028;
+      --text:#F1EAD4; --text-muted:#A9BDB0;
+      --accent:#E7C979; --accent-ink:#F3DFA0;
+      --gold:#E7C979; --border:#1E4238; /* --gold-soft stays constant — it's the logo's lamp glow, always warm */
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 16px 32px -16px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#081A16; --surface:#0F2620; --surface-alt:#123028;
+    --text:#F1EAD4; --text-muted:#A9BDB0;
+    --accent:#E7C979; --accent-ink:#F3DFA0;
+    --gold:#E7C979; --border:#1E4238;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 16px 32px -16px rgba(0,0,0,.55);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:"Source Serif 4", Georgia, "Noto Serif", serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .sans{font-family:"IBM Plex Sans", system-ui, sans-serif;}
+  a{color:inherit;}
+
+  /* ---------- header ---------- */
+  header.top{
+    display:flex;align-items:center;gap:12px;
+    max-width:1040px;margin:0 auto;padding:28px 24px 0;
+  }
+  .mark{width:30px;height:30px;flex:none;}
+  .wordmark{font-family:"Amiri", Georgia, serif;font-weight:700;font-size:1.2rem;text-decoration:none;color:var(--text);}
+  header.top nav{margin-left:auto;display:flex;gap:22px;font-family:"IBM Plex Sans",sans-serif;font-size:.88rem;color:var(--text-muted);}
+  header.top nav a{text-decoration:none;color:inherit;}
+  header.top nav a:hover{color:var(--accent-ink);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    margin:24px auto 0;
+    max-width:1040px;
+    border-radius:22px;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 38%, #123A32 0%, var(--night) 68%);
+    color:#F3ECD8;
+    padding:76px 32px 64px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .hero .rays{position:absolute;inset:0;opacity:.5;pointer-events:none;}
+  .hero .tagline-ar{
+    font-family:"Amiri", serif; font-size:1.15rem; color:var(--lamp-gold);
+    margin:0 0 18px; letter-spacing:.02em;
+  }
+  .hero h1{
+    font-family:"Amiri", Georgia, serif;
+    font-weight:700;
+    font-size:clamp(2.3rem, 5vw, 3.6rem);
+    line-height:1.08;
+    margin:0 0 18px;
+    text-wrap:balance;
+  }
+  .hero h1 em{font-style:italic;color:var(--lamp-gold);}
+  .hero p.sub{
+    font-family:"IBM Plex Sans", sans-serif;
+    font-size:1.08rem;
+    color:#CBD9D2;
+    max-width:46ch;
+    margin:0 auto 34px;
+  }
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    font-family:"IBM Plex Sans", sans-serif;font-weight:600;font-size:.94rem;
+    padding:13px 26px;border-radius:9px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--lamp-gold);color:#1B2B27;}
+  .btn-primary:hover{opacity:.92;}
+  .btn-ghost{background:transparent;color:#F3ECD8;border:1px solid rgba(243,236,216,.3);}
+  .btn-ghost:hover{border-color:rgba(243,236,216,.6);}
+  .badge-note{
+    margin-top:16px;font-family:"IBM Plex Sans",sans-serif;font-size:.78rem;
+    color:#8FA69C; letter-spacing:.02em;
+  }
+
+  /* ---------- section shell ---------- */
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+  section{padding:76px 0;}
+  .eyebrow{
+    font-family:"IBM Plex Sans", sans-serif;font-size:.76rem;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
+    margin:0 0 10px;
+  }
+  h2{
+    font-family:"Amiri", Georgia, serif;font-weight:700;
+    font-size:clamp(1.7rem,3vw,2.2rem);margin:0 0 14px;text-wrap:balance;
+  }
+  section > p.lede{
+    font-family:"IBM Plex Sans", sans-serif; color:var(--text-muted);
+    max-width:56ch; font-size:1.02rem; margin:0 0 44px;
+  }
+
+  /* ---------- features ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:26px 24px;box-shadow:var(--shadow);
+  }
+  .card svg{width:26px;height:26px;margin-bottom:14px;color:var(--gold);}
+  .card h3{
+    font-family:"IBM Plex Sans", sans-serif;font-weight:600;font-size:1rem;
+    margin:0 0 8px;
+  }
+  .card p{font-size:.94rem;color:var(--text-muted);margin:0;max-width:32ch;}
+
+  /* ---------- trust ---------- */
+  .trust{
+    background:var(--surface-alt);border:1px solid var(--border);
+    border-radius:18px;padding:44px 40px;
+    display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center;
+  }
+  @media (max-width:700px){.trust{grid-template-columns:1fr;padding:32px 24px;}}
+  .trust ul{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+  .trust li{
+    font-family:"IBM Plex Sans", sans-serif;font-size:.94rem;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .trust li svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--accent-ink);}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:32px 0 56px;
+    font-family:"IBM Plex Sans", sans-serif;font-size:.82rem;color:var(--text-muted);
+    display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;align-items:center;
+  }
+  footer .links{display:flex;gap:20px;}
+  footer a{text-decoration:none;color:inherit;}
+  footer a:hover{color:var(--accent-ink);}
+
+  @media (prefers-reduced-motion: no-preference){
+    .hero h1, .hero p.sub, .cta-row{animation:rise .6s ease both;}
+    .hero p.sub{animation-delay:.08s;}
+    .cta-row{animation-delay:.16s;}
+    @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="wordmark" href="index.html" style="display:flex;align-items:center;gap:12px;">
+    <svg class="mark" viewBox="0 0 512 512" aria-hidden="true">
+      <path d="M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430" fill="none" stroke="var(--gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M138,430 L374,430" stroke="var(--gold)" stroke-width="18" stroke-linecap="round"/>
+      <path d="M256,150 L256,222" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="9"/>
+      <path d="M256,270 Q270,286 256,312 Q242,286 256,270 Z" fill="var(--surface)"/>
+    </svg>
+    Mishkah
+  </a>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <svg class="rays" viewBox="0 0 1040 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g opacity="0.5" stroke="#E7C979" stroke-width="1">
+      <line x1="520" y1="40" x2="520" y2="150"/>
+      <line x1="520" y1="270" x2="520" y2="380"/>
+      <line x1="360" y1="210" x2="500" y2="210"/>
+      <line x1="540" y1="210" x2="680" y2="210"/>
+      <line x1="430" y1="110" x2="500" y2="185"/>
+      <line x1="610" y1="110" x2="540" y2="185"/>
+      <line x1="430" y1="310" x2="500" y2="235"/>
+      <line x1="610" y1="310" x2="540" y2="235"/>
+    </g>
+  </svg>
+  <p class="tagline-ar">مِشْكَاةٌ فِيهَا مِصْبَاح</p>
+  <h1>The niche<br><em>that holds the light.</em></h1>
+  <p class="sub">Mishkah is a Quran companion for daily reading, memorization, and prayer — the full Uthmani text, a live Qibla compass, and prayer reminders, with nothing sent off your phone.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.mishkah.quran">▶ Get it on Google Play</a>
+    <a class="btn btn-ghost" href="#features">See what's inside</a>
+  </div>
+  <p class="badge-note">Launching soon — this link goes live the day Mishkah is approved on Play.</p>
+</div>
+
+<div class="wrap">
+  <section id="features">
+    <p class="eyebrow">Inside the app</p>
+    <h2>Everything for reading, memorizing,<br>and praying — in one place.</h2>
+    <p class="lede">114 surahs, 6,236 ayat, authentic Uthmani script — and the tools built around them.</p>
+    <div class="grid">
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5c-.8 0-1.5-.7-1.5-1.5v-13Z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5c.8 0 1.5-.7 1.5-1.5v-13Z"/></svg>
+        <h3>The complete Quran</h3>
+        <p>All 114 surahs in Uthmani script, set in the Amiri Quran typeface, with English and Urdu translation on tap.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v6l4 2"/><circle cx="12" cy="13" r="8"/></svg>
+        <h3>Hifz tracker</h3>
+        <p>Mark ayat as memorized and watch a live dashboard: percent complete, surahs finished, and a daily streak.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <h3>Live Qibla compass</h3>
+        <p>Real-time bearing to the Kaaba, corrected for magnetic declination, with turn-by-turn guidance.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>
+        <h3>Prayer reminders</h3>
+        <p>Accurate prayer times for your location, with a gentle notification at Fajr, Dhuhr, Asr, Maghrib, and Isha.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/></svg>
+        <h3>Bookmarks &amp; share</h3>
+        <p>Save any ayah with a tap, then share it as beautifully formatted text.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <h3>Instant search</h3>
+        <p>Find any surah by Arabic name, English name, or number in an instant.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="private">
+    <p class="eyebrow">Built different</p>
+    <h2>Private by design, not by policy.</h2>
+    <div class="trust">
+      <div>
+        <p style="font-family:'IBM Plex Sans',sans-serif; color:var(--text-muted); font-size:1.02rem; max-width:40ch; margin:0;">
+          Mishkah doesn't even ask for internet access. The Quran, both translations, and every bookmark you save stay on your device — there's no server to send them to.
+        </p>
+      </div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> No ads, ever</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> No analytics or trackers</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> No account or sign-in</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Works fully offline</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <footer>
+    <span>© 2026 Mishkah</span>
+    <div class="links">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:afifaali931@gmail.com">Contact</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

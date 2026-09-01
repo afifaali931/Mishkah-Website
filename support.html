@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Mishkah</title>
+<meta name="description" content="Help with the Mishkah Quran app — reading, bookmarks, hifz tracking, Qibla, and prayer reminders.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230F5A4E'/%3E%3Cpath d='M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430' fill='none' stroke='%23C9A24B' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M138,430 L374,430' stroke='%23C9A24B' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z' fill='%23E7C979' stroke='%23C9A24B' stroke-width='9'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#FBF7EC;
+    --surface:#FFFFFF;
+    --surface-alt:#F3ECDA;
+    --text:#182420;
+    --text-muted:#5B6B63;
+    --accent:#0F5A4E;
+    --accent-ink:#0F5A4E;
+    --gold:#AD8433;
+    --gold-soft:#E7C979;
+    --border:#E3D9BC;
+    --shadow: 0 1px 2px rgba(24,36,32,.04), 0 8px 24px -12px rgba(24,36,32,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#081A16; --surface:#0F2620; --surface-alt:#123028;
+      --text:#F1EAD4; --text-muted:#A9BDB0;
+      --accent:#E7C979; --accent-ink:#F3DFA0;
+      --gold:#E7C979; --border:#1E4238; /* --gold-soft stays constant, see index.html comment */
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#081A16; --surface:#0F2620; --surface-alt:#123028;
+    --text:#F1EAD4; --text-muted:#A9BDB0;
+    --accent:#E7C979; --accent-ink:#F3DFA0;
+    --gold:#E7C979; --border:#1E4238;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:"Source Serif 4", Georgia, "Noto Serif", serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px 96px;}
+
+  header.top{
+    display:flex;align-items:center;gap:14px;
+    padding:40px 0 28px;border-bottom:1px solid var(--border);margin-bottom:40px;
+  }
+  .mark{width:34px;height:34px;flex:none;}
+  .wordmark{font-family:"Amiri", Georgia, serif;font-weight:700;font-size:1.35rem;color:var(--text);text-decoration:none;}
+  .tagchip{
+    margin-left:auto;font-family:"IBM Plex Sans", system-ui, sans-serif;
+    font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--surface-alt);
+    border:1px solid var(--border);padding:5px 11px;border-radius:100px;
+  }
+
+  h1{font-family:"Amiri", Georgia, serif;font-weight:700;font-size:2.35rem;line-height:1.15;margin:0 0 8px;text-wrap:balance;}
+  .dek{font-family:"IBM Plex Sans", system-ui, sans-serif;color:var(--text-muted);font-size:.95rem;margin:0 0 40px;max-width:56ch;}
+
+  .contact-card{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);
+    border-radius:10px;padding:22px 24px;margin:0 0 44px;box-shadow:var(--shadow);
+  }
+  .contact-card .txt{flex:1;min-width:200px;}
+  .contact-card h2{margin:0 0 4px;font-size:1.1rem;}
+  .contact-card p{margin:0;color:var(--text-muted);font-size:.95rem;}
+  .btn{
+    font-family:"IBM Plex Sans", system-ui, sans-serif;font-weight:600;font-size:.9rem;
+    background:var(--accent);color:var(--bg);text-decoration:none;
+    padding:11px 20px;border-radius:8px;white-space:nowrap;
+    transition:opacity .15s ease;
+  }
+  .btn:hover, .btn:focus-visible{opacity:.85;}
+
+  h2.section-h{font-family:"Amiri", Georgia, serif;font-weight:700;font-size:1.3rem;margin:0 0 18px;}
+  .faq{margin:0 0 48px;}
+  details{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:0;margin:0 0 10px;overflow:hidden;
+  }
+  summary{
+    font-family:"IBM Plex Sans", system-ui, sans-serif;font-weight:600;font-size:.98rem;
+    padding:16px 20px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::before{
+    content:"+";color:var(--gold);font-family:"Source Serif 4",serif;font-weight:600;
+    font-size:1.1rem;width:1em;flex:none;
+  }
+  details[open] summary::before{content:"–";}
+  details[open] summary{border-bottom:1px solid var(--border);}
+  .faq-a{padding:14px 20px 20px 52px;color:var(--text-muted);font-size:.98rem;}
+  .faq-a p{margin:0 0 10px;max-width:60ch;}
+  .faq-a p:last-child{margin-bottom:0;}
+  .faq-a code{
+    background:var(--surface-alt);border:1px solid var(--border);border-radius:5px;
+    padding:1px 6px;font-family:"IBM Plex Sans", monospace;font-size:.85em;
+  }
+
+  a{color:var(--accent-ink);}
+  a:focus-visible, summary:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+
+  footer{
+    margin-top:16px;padding-top:24px;border-top:1px solid var(--border);
+    font-family:"IBM Plex Sans", system-ui, sans-serif;font-size:.82rem;color:var(--text-muted);
+    display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  }
+  footer a{color:var(--text-muted);text-decoration:none;}
+  footer a:hover{color:var(--accent-ink);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="wordmark" href="index.html" style="display:flex;align-items:center;gap:14px;">
+      <svg class="mark" viewBox="0 0 512 512" aria-hidden="true">
+        <path d="M156,430 L156,262 Q156,150 256,120 Q356,150 356,262 L356,430" fill="none" stroke="var(--gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M138,430 L374,430" stroke="var(--gold)" stroke-width="18" stroke-linecap="round"/>
+        <path d="M256,150 L256,222" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+        <path d="M256,236 Q300,250 300,296 Q300,344 256,352 Q212,344 212,296 Q212,250 256,236 Z" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="9"/>
+        <path d="M256,270 Q270,286 256,312 Q242,286 256,270 Z" fill="var(--surface)"/>
+      </svg>
+      Mishkah
+    </a>
+    <span class="tagchip">Support</span>
+  </header>
+
+  <h1>Support</h1>
+  <p class="dek">Help with the Mishkah Quran app — for reading, bookmarks, hifz tracking, Qibla, and prayer reminders.</p>
+
+  <div class="contact-card">
+    <div class="txt">
+      <h2>Still stuck?</h2>
+      <p>Write in and you'll hear back directly — there's no ticket system, just a real reply.</p>
+    </div>
+    <a class="btn" href="mailto:afifaali931@gmail.com">Email support</a>
+  </div>
+
+  <h2 class="section-h">Frequently asked questions</h2>
+  <div class="faq">
+    <details open>
+      <summary>Does Mishkah need internet access?</summary>
+      <div class="faq-a"><p>No. The full Quran, both translations, and all app features work completely offline — Mishkah doesn't request internet permission at all. See the <a href="privacy.html">Privacy Policy</a> for details.</p></div>
+    </details>
+    <details>
+      <summary>How do I bookmark or memorize an ayah?</summary>
+      <div class="faq-a"><p>Open any surah from the Chapters tab, then use the ★ button on a verse to bookmark it, or the memorize action to mark it as memorized. Bookmarked ayat appear under the Bookmarks tab; memorized ones feed your progress on the Hifz tab.</p></div>
+    </details>
+    <details>
+      <summary>Why is my Qibla compass inaccurate or jumpy?</summary>
+      <div class="faq-a"><p>Phone compasses drift over time and need periodic calibration — move your phone in a slow figure-8 motion for a few seconds. Also keep it away from metal objects, magnets, and speakers, which throw off the magnetic sensor.</p></div>
+    </details>
+    <details>
+      <summary>I turned on prayer reminders but got no notification.</summary>
+      <div class="faq-a"><p>Check three things: notification permission is granted (Settings → Apps → Mishkah → Notifications), the Qibla tab has a location fix (reminders need to know where you are), and your device's battery optimization isn't restricting Mishkah in the background — some phones aggressively kill scheduled alarms unless the app is excluded from battery optimization.</p></div>
+    </details>
+    <details>
+      <summary>How do I see a translation of a verse?</summary>
+      <div class="faq-a"><p>Tap the <code>EN</code> or <code>اردو</code> button on any ayah to reveal the English (Saheeh International) or Urdu (Fateh Muhammad Jalandhry) translation. Each toggles independently per verse.</p></div>
+    </details>
+    <details>
+      <summary>Do I need an account?</summary>
+      <div class="faq-a"><p>No — there's no sign-in anywhere in the app. Everything you save lives locally on your device.</p></div>
+    </details>
+    <details>
+      <summary>Will my bookmarks and progress survive a phone change?</summary>
+      <div class="faq-a"><p>Not automatically today — bookmarks and hifz progress are stored only on your device and aren't backed up to any account. Keep that in mind before uninstalling or switching phones.</p></div>
+    </details>
+  </div>
+
+  <footer>
+    <span>© 2026 Mishkah</span>
+    <span><a href="index.html">Home</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:afifaali931@gmail.com">Contact</a></span>
+  </footer>
+</div>
+
+</body>
+</html>
